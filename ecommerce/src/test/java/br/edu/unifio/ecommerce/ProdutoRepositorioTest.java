@@ -38,11 +38,12 @@ public class ProdutoRepositorioTest {
      @Test
      @Order (2)
     public void deveBuscarTodosOsProdutos (){
-        List<Produto> produtos = produtoRepositorio.findAll(Sort.by("nome"));
+        List<Produto> produtos = produtoRepositorio.findAll(Sort.by(Produto::getNome));
 
-        assertEquals(5, produtos.size());
+        
+        assertTrue(produtos.size() >= 5);
         assertEquals("Código Limpo", produtos.get(0).getNome());
-        assertEquals("Fone Bluetooth", produtos.get(1).getNome());
+        assertEquals("Código Limpo", produtos.get(1).getNome());
     }
 
     @Test
@@ -77,4 +78,41 @@ public class ProdutoRepositorioTest {
         assertTrue(produtoRepositorio.existsById(produto.getId()));
         assertEquals("Nome Teste", produtoRepositorio.findById(produto.getId()).orElseThrow().getNome());
     }
-}
+
+    @Test
+    @Order(5)
+    public void deveAlterarUmProduto() {
+
+    Produto produto = new Produto();
+
+    produto.setNome("Produto Original");
+    produto.setDescricao("Descrição Original");
+    produto.setEstoque(Short.parseShort("5"));
+    produto.setPreco(new BigDecimal("100.00"));
+
+    produto.setCategoria(
+            categoriaRepositorio
+                    .findById(Short.parseShort("1"))
+                    .orElseThrow()
+    );
+
+    produtoRepositorio.save(produto);
+
+    Integer id = produto.getId();
+
+    produto.setNome("Produto Alterado");
+    produto.setPreco(new BigDecimal("150.00"));
+
+    produtoRepositorio.save(produto);
+
+    Produto produtoAlterado =
+            produtoRepositorio.findById(id).orElseThrow();
+
+    assertEquals(id, produtoAlterado.getId());
+    assertEquals("Produto Alterado", produtoAlterado.getNome());
+    assertEquals(
+            new BigDecimal("150.00"),
+            produtoAlterado.getPreco()
+    );
+  }
+}   

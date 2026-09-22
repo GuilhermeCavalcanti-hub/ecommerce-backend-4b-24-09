@@ -1,6 +1,5 @@
 package br.edu.unifio.ecommerce.entidades;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,17 +11,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Cliente {
-   @Id
-     @GeneratedValue (strategy = GenerationType.IDENTITY)
-     
-     private Integer id;
 
-     private String nome;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-     private String email;
+    private String nome;
 
-     private String cpf;
+    private String email;
 
-     private Integer senha;
+    private String cpf;
 
+    private String senha;
 }
+
